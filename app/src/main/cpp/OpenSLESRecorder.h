@@ -2,8 +2,8 @@
 // Created by zuo on 2022/5/31/031.
 //
 
-#ifndef OPENSLES_OPENGLESRECORDER_H
-#define OPENSLES_OPENGLESRECORDER_H
+#ifndef OPENSLES_OPENSLESRECORDER_H
+#define OPENSLES_OPENSLESRECORDER_H
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
@@ -21,10 +21,10 @@
 #define CHANNELS 2
 #define BUFFER_SIZE   (FRAME_SIZE * CHANNELS)
 
-class OpenGLESRecorder {
+class OpenSLESRecorder {
 public:
-    OpenGLESRecorder();
-    ~OpenGLESRecorder();
+    OpenSLESRecorder();
+    ~OpenSLESRecorder();
 
     void startRecord(const std::string& path);
 
@@ -52,4 +52,4 @@ public:
 };
 
 
-#endif //OPENSLES_OPENGLESRECORDER_H
+#endif //OPENSLES_OPENSLESRECORDER_H

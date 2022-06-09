@@ -2,7 +2,7 @@
 // Created by zuo on 2022/5/30/030.
 //
 
-#include "OpenGLESPlayer.h"
+#include "OpenSLESPlayer.h"
 
 
 FILE *pcmFile;
@@ -10,11 +10,11 @@ void *buffer;
 uint8_t *out_buffer;
 SLAndroidSimpleBufferQueueItf bqPlayerBufferQueue = NULL;
 
-OpenGLESPlayer::OpenGLESPlayer() {
+OpenSLESPlayer::OpenSLESPlayer() {
 
 }
 
-OpenGLESPlayer::~OpenGLESPlayer() {
+OpenSLESPlayer::~OpenSLESPlayer() {
 
 }
 
@@ -37,7 +37,7 @@ void pcmBufferCallBack(SLAndroidSimpleBufferQueueItf bf, void * context) {
     }
 }
 
-int32_t OpenGLESPlayer::prepare() {
+int32_t OpenSLESPlayer::prepare() {
     out_buffer = (uint8_t *) malloc(44100 * 2 * 2);
 
     // 1、创建引擎与接口
@@ -122,7 +122,7 @@ int32_t OpenGLESPlayer::prepare() {
     return ret;
 }
 
-int32_t OpenGLESPlayer::setDataSource(const std::string &pcmPath) {
+int32_t OpenSLESPlayer::setDataSource(const std::string &pcmPath) {
     LOGE("setDataSource->%s",pcmPath.c_str());
     pcmFile = fopen(pcmPath.c_str(), "r");
 
@@ -134,7 +134,7 @@ int32_t OpenGLESPlayer::setDataSource(const std::string &pcmPath) {
     return 0;
 }
 
-SLresult OpenGLESPlayer::createEngine() {
+SLresult OpenSLESPlayer::createEngine() {
     SLresult result;
     // 创建引擎engineObject
     result = slCreateEngine(&engineObject, 0, NULL, 0, NULL, NULL);
@@ -159,7 +159,7 @@ SLresult OpenGLESPlayer::createEngine() {
 }
 
 // 5、设置播放状态
-void OpenGLESPlayer::start() {
+void OpenSLESPlayer::start() {
     //获取播放状态接口
     SLresult ret = (*pcmPlayerObject)->GetInterface(pcmPlayerObject, SL_IID_PLAY, &pcmPlayerPlay);
     if (ret != SL_RESULT_SUCCESS) {
@@ -173,19 +173,19 @@ void OpenGLESPlayer::start() {
     pcmBufferCallBack(bqPlayerBufferQueue, this);
 }
 
-void OpenGLESPlayer::resume() {
+void OpenSLESPlayer::resume() {
     if (pcmPlayerPlay != nullptr) {
         (*pcmPlayerPlay)->SetPlayState(pcmPlayerPlay, SL_PLAYSTATE_PLAYING);
     }
 }
 
-void OpenGLESPlayer::pause() {
+void OpenSLESPlayer::pause() {
     if (pcmPlayerPlay != nullptr) {
         (*pcmPlayerPlay)->SetPlayState(pcmPlayerPlay, SL_PLAYSTATE_PAUSED);
     }
 }
 
-void OpenGLESPlayer::stop() {
+void OpenSLESPlayer::stop() {
     LOGD("stop");
     if (pcmPlayerPlay != nullptr) {
         (*pcmPlayerPlay)->SetPlayState(pcmPlayerPlay, SL_PLAYSTATE_STOPPED);
@@ -193,7 +193,7 @@ void OpenGLESPlayer::stop() {
 }
 
 // 7、停止播放
-void OpenGLESPlayer::release() {
+void OpenSLESPlayer::release() {
     LOGD("start release");
     //设置停止状态
     if (pcmPlayerPlay) {

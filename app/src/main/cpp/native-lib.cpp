@@ -1,17 +1,17 @@
 #include <jni.h>
 #include <string>
-#include "OpenGLESPlayer.h"
-#include "OpenGLESRecorder.h"
+#include "OpenSLESPlayer.h"
+#include "OpenSLESRecorder.h"
 
-OpenGLESPlayer *player = NULL;
-OpenGLESRecorder *audioRecorder = NULL;
+OpenSLESPlayer *player = NULL;
+OpenSLESRecorder *audioRecorder = NULL;
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_zxj_opensles_OpenSlESPlayer_init(JNIEnv *env, jobject thiz) {
     LOGD("init");
     if (player == NULL) {
-        player = new OpenGLESPlayer();
+        player = new OpenSLESPlayer();
     }
     player->prepare();
 }
@@ -19,10 +19,10 @@ Java_com_zxj_opensles_OpenSlESPlayer_init(JNIEnv *env, jobject thiz) {
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_zxj_opensles_OpenSlESPlayer_setPcmData(JNIEnv *env, jobject thiz, jstring path) {
-    LOGD("setPcmData->path:%s",path);
+//    LOGD("setPcmData->path:%s",path);
     const char *filePath = env->GetStringUTFChars(path,0);
     if (player == NULL) {
-        player = new OpenGLESPlayer();
+        player = new OpenSLESPlayer();
     }
     player->setDataSource(filePath);
 //    player->prepare();
@@ -78,7 +78,7 @@ Java_com_zxj_opensles_OpenSlESAudioRecorder_startRecord(JNIEnv *env, jobject thi
         filePath = "/sdcard/audio.pcm";
     }
     if(audioRecorder == nullptr){
-        audioRecorder = new OpenGLESRecorder();
+        audioRecorder = new OpenSLESRecorder();
     }
     audioRecorder->startRecord(filePath);
     env->ReleaseStringUTFChars(path,filePath);

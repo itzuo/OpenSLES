@@ -2,20 +2,20 @@
 // Created by zuo on 2022/5/31/031.
 //
 
-#include "OpenGLESRecorder.h"
+#include "OpenSLESRecorder.h"
 
-OpenGLESRecorder::OpenGLESRecorder() {
+OpenSLESRecorder::OpenSLESRecorder() {
 
 }
 
-OpenGLESRecorder::~OpenGLESRecorder() {
+OpenSLESRecorder::~OpenSLESRecorder() {
     release();
 }
 
 // 录制音频时的回调
 void AudioRecorderCallback(SLAndroidSimpleBufferQueueItf bufferQueueItf, void *context) {
     //注意这个是另外一条采集线程回调
-    OpenGLESRecorder *recorderContext = (OpenGLESRecorder *) context;
+    OpenSLESRecorder *recorderContext = (OpenSLESRecorder *) context;
     assert(recorderContext != NULL);
     if (recorderContext->buffer != NULL) {
         fwrite(recorderContext->buffer, recorderContext->bufferSize, 1, recorderContext->pfile);
@@ -35,7 +35,7 @@ void AudioRecorderCallback(SLAndroidSimpleBufferQueueItf bufferQueueItf, void *c
     }
 }
 
-void OpenGLESRecorder::startRecord(const std::string &path) {
+void OpenSLESRecorder::startRecord(const std::string &path) {
     if(engineEngine == nullptr){
         createEngine();
     }
@@ -138,7 +138,7 @@ void OpenGLESRecorder::startRecord(const std::string &path) {
     LOGD("Starting recording tid=%ld", syscall(SYS_gettid));//线程id
 }
 
-void OpenGLESRecorder::createEngine() {
+void OpenSLESRecorder::createEngine() {
     SLEngineOption pEngineOptions[] = {(SLuint32) SL_ENGINEOPTION_THREADSAFE,
                                        (SLuint32) SL_BOOLEAN_TRUE};
     // 创建引擎对象,//调用全局方法创建一个引擎对象（OpenSL ES唯一入口）
@@ -162,8 +162,8 @@ void OpenGLESRecorder::createEngine() {
     assert(SL_RESULT_SUCCESS == result);
 }
 
-void OpenGLESRecorder::pauseRecord() {
-    LOGD("OpenGLESRecorder::pauseRecord");
+void OpenSLESRecorder::pauseRecord() {
+    LOGD("OpenSLESRecorder::pauseRecord");
     // 暂停录制
     if (recorderRecord != nullptr) {
         //设置录制器为停止状态 SL_RECORDSTATE_STOPPED
@@ -172,8 +172,8 @@ void OpenGLESRecorder::pauseRecord() {
     }
 }
 
-void OpenGLESRecorder::recordingRecord() {
-    LOGD("OpenGLESRecorder::recordingRecord");
+void OpenSLESRecorder::recordingRecord() {
+    LOGD("OpenSLESRecorder::recordingRecord");
     // 暂停录制
     if (recorderRecord != nullptr) {
         //设置录制器为停止状态 SL_RECORDSTATE_STOPPED
@@ -182,8 +182,8 @@ void OpenGLESRecorder::recordingRecord() {
     }
 }
 
-void OpenGLESRecorder::stopRecord() {
-    LOGD("OpenGLESRecorder::stopRecord");
+void OpenSLESRecorder::stopRecord() {
+    LOGD("OpenSLESRecorder::stopRecord");
     // 停止录制
     if (recorderRecord != nullptr) {
         //设置录制器为停止状态 SL_RECORDSTATE_STOPPED
@@ -197,7 +197,7 @@ void OpenGLESRecorder::stopRecord() {
     }
 }
 
-void OpenGLESRecorder::release() {
+void OpenSLESRecorder::release() {
     //只需要销毁OpenSL ES对象，接口不需要做Destroy处理。
     if (recorderObject != nullptr) {
         (*recorderObject)->Destroy(recorderObject);

@@ -2,18 +2,18 @@
 // Created by zuo on 2022/5/30/030.
 //
 
-#ifndef OPENSLES_OPENGLESPLAYER_H
-#define OPENSLES_OPENGLESPLAYER_H
+#ifndef OPENSLES_OPENSLESPLAYER_H
+#define OPENSLES_OPENSLESPLAYER_H
 
 #include <string>
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include "AndroidLog.h"
 
-class OpenGLESPlayer {
+class OpenSLESPlayer {
 public:
-    OpenGLESPlayer();
-    ~OpenGLESPlayer();
+    OpenSLESPlayer();
+    ~OpenSLESPlayer();
     int32_t prepare();
     int32_t setDataSource(const std::string& pcmPath);
     void start();
@@ -34,4 +34,4 @@ private:
 };
 
 
-#endif //OPENSLES_OPENGLESPLAYER_H
+#endif //OPENSLES_OPENSLESPLAYER_H
